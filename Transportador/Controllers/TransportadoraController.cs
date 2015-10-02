@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
-using Transportador.Negocio;
-using Transportador.Models;
 using Transportador.Entidades;
+using Transportador.Models;
+using Transportador.Negocio;
 
 namespace Transportador.Controllers
 {
@@ -42,18 +42,29 @@ namespace Transportador.Controllers
         // GET: Cadastro/Create
         public ActionResult Create()
         {
-            TransportadoraFacade facade = new TransportadoraFacade();
 
             TransportadoraModels entity = new TransportadoraModels();
 
-            entity.Classificacao = from i in facade.Listar(string.Empty)
-                                   select new ClassificacaoModels()
-                                   {
-                                       Id = i.Id,
-                                       Nome = i.Nome
-                                   };
+
+            entity.Classificacao = ClassficicacoesLista();
 
             return View(entity);
+        }
+
+
+        private IList<ClassificacaoModels> ClassficicacoesLista()
+        {
+
+            ClassificacaoFacade facade = new ClassificacaoFacade();
+            return (from i in facade.Listar()
+                   select new ClassificacaoModels()
+                   {
+                       Id = i.Id,
+                       Nome = i.Nome
+                   }).ToList<ClassificacaoModels>() ;
+
+
+
         }
 
         // POST: Cadastro/Create
@@ -72,6 +83,7 @@ namespace Transportador.Controllers
             }
             catch
             {
+                entity.Classificacao = ClassficicacoesLista();
                 return View(entity);
             }
         }

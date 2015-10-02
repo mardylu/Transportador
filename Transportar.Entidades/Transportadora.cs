@@ -17,6 +17,8 @@ namespace Transportador.Entidades
         [Required(ErrorMessage = "Nome não pode ser branco.")]
         public string Nome { get; set; }
 
-            
+
+        public int ClassificacaoId { get; set; }
+        public virtual Classificacao Classificacao { get; set; }
     }
 }
